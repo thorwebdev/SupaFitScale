@@ -20,8 +20,14 @@ const computeData = (data) => {
     const age = document.querySelector('input[name="age"]').value
     const gender = document.querySelector('select[name="gender"]').value
     const metrics = new Metrics(weight, impedance, height, age, gender)
-    metrics.getResult().map(item => {
-      const html =`<div class="item"><div class="name">${item.name}</div><div class="value">${parseFloat(item.value).toFixed(2)}</div></div>`
+    const result = metrics.getResult()
+    console.log(result)
+    result.map((item) => {
+      const html = `<div class="item"><div class="name">${
+        item.name
+      }</div><div class="value">${parseFloat(item.value).toFixed(
+        2
+      )}</div></div>`
       document.querySelector('.result').innerHTML += html
     })
     document.querySelector('.result').removeAttribute('hidden')
@@ -33,23 +39,26 @@ const computeData = (data) => {
 const onButtonClick = async () => {
   try {
     scan = await navigator.bluetooth.requestLEScan({
-      acceptAllAdvertisements: true
+      acceptAllAdvertisements: true,
     })
     document.querySelector('.button.start').setAttribute('hidden', '')
     document.querySelector('.loading').removeAttribute('hidden')
     document.querySelector('.form').setAttribute('hidden', '')
-    navigator.bluetooth.addEventListener('advertisementreceived', event => {
-      if (event.device.name !== 'MIBCS') return
+    navigator.bluetooth.addEventListener('advertisementreceived', (event) => {
+      console.log(event)
+      if (event.device.name !== 'MIBFS') return
       document.querySelector('.loading').setAttribute('hidden', '')
       document.querySelector('.scale').removeAttribute('hidden')
-      event.serviceData.forEach((valueDataView) => {  
+      event.serviceData.forEach((valueDataView) => {
         computeData(valueDataView)
       })
     })
   } catch (e) {
     if (e.code === 11) return
     if (e.code === 0) {
-      alert('Bluetooth scanning permission denied. Please update browser settings to allow access.')
+      alert(
+        'Bluetooth scanning permission denied. Please update browser settings to allow access.'
+      )
       return
     }
     console.log(e.message)
@@ -67,6 +76,10 @@ const onInputChange = (e) => {
   }
 }
 
-document.querySelector('input[name="height"]').addEventListener('keyup', onInputChange)
-document.querySelector('input[name="age"]').addEventListener('keyup', onInputChange)
+document
+  .querySelector('input[name="height"]')
+  .addEventListener('keyup', onInputChange)
+document
+  .querySelector('input[name="age"]')
+  .addEventListener('keyup', onInputChange)
 document.querySelector('.button.start').addEventListener('click', onButtonClick)

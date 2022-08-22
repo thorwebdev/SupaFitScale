@@ -10,6 +10,11 @@
   },
   "author": "",
   "license": "ISC",
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": false
+  },
   "dependencies": {
     "buffer": "^5.6.0",
     "metrics": "^0.1.21",
