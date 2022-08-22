@@ -1,5 +1,7 @@
 import 'regenerator-runtime/runtime'
 import Metrics from './metrics'
+import supabase from './supabase'
+import { AuthApiError } from '@supabase/supabase-js'
 
 let scan
 
@@ -37,13 +39,21 @@ const computeData = (data) => {
 }
 
 const onButtonClick = async () => {
+  const height = document.querySelector('input[name="height"]').value
+  const age = document.querySelector('input[name="age"]').value
+  const gender = document.querySelector('select[name="gender"]').value
+  await supabase
+    .from('users')
+    .update({ age, height, gender })
+    .eq('id', (await supabase.auth.getUser()).data.user.id)
+
   try {
     scan = await navigator.bluetooth.requestLEScan({
       acceptAllAdvertisements: true,
     })
     document.querySelector('.button.start').setAttribute('hidden', '')
     document.querySelector('.loading').removeAttribute('hidden')
-    document.querySelector('.form').setAttribute('hidden', '')
+    document.querySelector('#userform').setAttribute('hidden', '')
     navigator.bluetooth.addEventListener('advertisementreceived', (event) => {
       console.log(event)
       if (event.device.name !== 'MIBFS') return
@@ -83,3 +93,39 @@ document
   .querySelector('input[name="age"]')
   .addEventListener('keyup', onInputChange)
 document.querySelector('.button.start').addEventListener('click', onButtonClick)
+
+// Loginform
+const loginForm = document.querySelector('#loginform')
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const formData = new FormData(loginForm)
+  // Log in user
+  const { error } = await supabase.auth.signInWithPassword({
+    email: formData.get('email'),
+    password: formData.get('password'),
+  })
+  if (error instanceof AuthApiError) {
+    const { data, error } = await supabase.auth.signUp({
+      email: formData.get('email'),
+      password: formData.get('password'),
+    })
+    if (error) return alert(error.message)
+  }
+})
+
+// User status change
+supabase.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'SIGNED_IN') {
+    loginForm.setAttribute('hidden', '')
+    document.querySelector('#userform').removeAttribute('hidden')
+    if (!document.querySelector('input[name="age"]').value) {
+      // Load user data
+      const { data } = await supabase.from('users').select('*').single()
+      document.querySelector('input[name="age"]').value = data.age
+      document.querySelector('input[name="height"]').value = data.height
+      document.querySelector('select[name="gender"]').value = data.gender
+      if (data.age)
+        document.querySelector('.button.start').removeAttribute('disabled')
+    }
+  }
+})

@@ -2,9 +2,19 @@
 
 Read Xiaomi Mi Scale (MIBFS) with the [Web Bluetooth Scanning API](https://googlechrome.github.io/samples/web-bluetooth/scan.html) and store results in Supabase, secured by Supabase Auth and RLS.
 
-![](https://i.imgur.com/xnbdyzO.jpg)
+![Demo image](https://i.imgur.com/xnbdyzO.jpg)
 
-### Setup, Build and Serve
+### Setup
+
+- Install [Docker](https://docs.docker.com/get-docker/)
+- Install the [Supabase CLI](https://supabase.com/docs/guides/cli)
+
+```bash
+# start supabase locally and apply the setup migrations
+supabase start
+```
+
+### Build and Serve
 
 ```bash
 # install dependencies

@@ -182,12 +182,23 @@
   }
 </style>
 <div class="app">
-  <form class="form">
-    <h2>Xiaomi Mi Scale (MIBFS) Web Bluetooth Scanning API Demo</h2>
-    <p>
-      This demo required Chrome 79+ with
-      chrome://flags/#enable-experimental-web-platform-features flag enabled.
-    </p>
+  <h2>Xiaomi Mi Scale (MIBFS) Web Bluetooth Scanning API Demo</h2>
+  <p>
+    This demo required Chrome 79+ with
+    chrome://flags/#enable-experimental-web-platform-features flag enabled.
+  </p>
+  <form id="loginform" class="form">
+    <div class="input">
+      <label>Email</label>
+      <input name="email" type="email" required />
+    </div>
+    <div class="input">
+      <label>Password</label>
+      <input name="password" type="password" required />
+    </div>
+    <button class="button">Sign in</button>
+  </form>
+  <form id="userform" class="form" hidden>
     <div class="input">
       <label>Age</label>
       <input name="age" type="number" required />
@@ -203,8 +214,8 @@
         <option value="male">Male</option>
       </select>
     </div>
+    <div class="button start" disabled>Start</div>
   </form>
-  <div class="button start" disabled>Start</div>
   <div class="loading" hidden>Searching for Mi Scale ...</div>
   <div class="scale" hidden>
     <span class="value">0.0</span>
@@ -214,26 +225,26 @@
     <div class="indeterminate"></div>
   </div>
   <div class="result" hidden></div>
+  <footer>
+    <a
+      href="https://dev.to/henrylim96/reading-xiaomi-mi-scale-data-with-web-bluetooth-scanning-api-1mb9"
+      target="_blank"
+      rel="noopener noreferrer"
+      >Blog</a
+    >
+    <a
+      href="https://github.com/limhenry/web-bluetooth-mi-scale"
+      target="_blank"
+      rel="noopener noreferrer"
+      >GitHub</a
+    >
+    <a
+      href="https://twitter.com/henrylim96"
+      target="_blank"
+      rel="noopener noreferrer"
+      >Twitter</a
+    >
+  </footer>
 </div>
-<footer>
-  <a
-    href="https://dev.to/henrylim96/reading-xiaomi-mi-scale-data-with-web-bluetooth-scanning-api-1mb9"
-    target="_blank"
-    rel="noopener noreferrer"
-    >Blog</a
-  >
-  <a
-    href="https://github.com/limhenry/web-bluetooth-mi-scale"
-    target="_blank"
-    rel="noopener noreferrer"
-    >GitHub</a
-  >
-  <a
-    href="https://twitter.com/henrylim96"
-    target="_blank"
-    rel="noopener noreferrer"
-    >Twitter</a
-  >
-</footer>
 
 <script src="./main.js"></script>
